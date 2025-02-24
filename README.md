@@ -1,24 +1,10 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+2 main pages as of now: the Featured page and Feed Page. in which featured shows only last 5 posts.
 
-Things you may want to cover:
+both feed and featured pages involve navbar modal and post class.
 
-* Ruby version
+navbar modal helps user transfer between the two pages and has create post button which opens a create post modal.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+post class has the post details, edit and delete buttons.
+edit button updates content and delete button deletes the post.
