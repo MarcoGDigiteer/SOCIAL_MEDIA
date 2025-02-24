@@ -1,0 +1,37 @@
+<div class="navbar">
+  <button onclick="location.href='/'">Feed</button>
+  <button onclick="location.href='/featured'">Featured</button>
+  <button onclick="openCreatePost()">Create post</button>
+</div>
+
+<style>
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 10px;
+    border-right: 1px solid #444;
+    position: fixed;
+  }
+
+  .navbar button {
+    background: none;
+    border: none;
+    color: black;
+    padding: 15px;
+    margin: 12px 0;
+    cursor: pointer;
+    font-size: 18px;
+    text-align: left;
+    width: 100%;
+    text-transform: capitalize;
+  }
+
+  .navbar button:hover {
+    background: #ddd;
+    border-radius: 20px;
+    padding-left: 20px;
+  }
+</style>
