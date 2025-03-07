@@ -1,60 +1,69 @@
-<div class="post-card">
-  <div class="post-content">
-    <h2 class="post-title"><%= post.title %></h2>
-    <p class="post-meta">
-      Created: <%= post.created_at.strftime("%b %d, %Y %I:%M %p") %> |
-      Edited: <%= post.updated_at.strftime("%b %d, %Y %I:%M %p") %>
-    </p>
-    <p class="post-body"><%= post.content %></p>
-  </div>
+<% if post.present? %>
+  <% if admin_signed_in? %>
+    <!-- Admin View -->
+    <div class="post-admin-row">
+      <span class="admin-email"><%= post.email %></span>
+      <span class="admin-title"><%= post.title %></span>
+      <span class="admin-body"><%= truncate(post.body, length: 100) %></span>
+      <span class="admin-date-created"><%= post.created_at.strftime("%Y-%m-%d %H:%M") %></span>
+      <span class="admin-date-edited">
+        <% if post.created_at != post.updated_at %>
+          <%= post.updated_at.strftime("%Y-%m-%d %H:%M") %>
+        <% else %>
+          N/A
+        <% end %>
+      </span>
 
-  <div class="post-actions">
-    <button class="action-button edit-button" onclick="openEditPost('<%= post.id %>', '<%= j post.title %>', '<%= j post.content %>')">✏️</button>
-    <button class="action-button delete-button" onclick="openDeletePost(<%= post.id %>)">🗑️</button>
-  </div>
-</div>
+      <div class="admin-controls">
 
-<style>
-  .post-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    background: #ffffff;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-    position: relative;
-  }
+        <!-- Visibility Toggle -->
+        <%= button_to post.visibility? ? "Hide" : "Show", toggle_visibility_admin_post_path(post), 
+              method: :patch, 
+              class: "btn #{post.visibility? ? 'btn-hide' : 'btn-show'}" %>
 
-  .post-meta {
-    font-size: 12px;
-    color: gray;
-    margin-top: 5px;
-  }
+        <!-- Feature Toggle -->
+        <% if post.featured? %>
+          <%= button_to "Unfeature", toggle_featured_admin_post_path(post), method: :patch, class: "btn btn-unfeature" %>
+        <% else %>
+          <% if Post.where(featured: true).count < 5 %>
+            <%= button_to "Feature", toggle_featured_admin_post_path(post), method: :patch, class: "btn btn-feature" %>
+          <% else %>
+            <button class="btn btn-secondary" disabled>Feature (Limit Reached)</button>
+          <% end %>
+        <% end %>
 
-  .post-body {
-    font-size: 19px;
-    color: #333;
-  }
+      </div>
+    </div>
 
-  .post-actions {
-    display: flex;
-    gap: 10px;
-  }
+  <% else %>
+    <!-- User View -->
+    <div class="post-card">
+      <div class="post-header">
+        <span class="post-email"><%= post.email %></span>
+        <strong>Created:</strong> <%= post.created_at.strftime("%Y-%m-%d %H:%M") %>
+        <% if post.created_at != post.updated_at %>
+          | <strong>Edited:</strong> <%= post.updated_at.strftime("%Y-%m-%d %H:%M") %>
+        <% end %>
 
-  .action-button {
-    background: lightgray;
-    border: none;
-    border-radius: 15px;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: black;
-    font-size: 14px;
-    cursor: pointer;
-  }
+        <% if current_user && post.email == current_user.email %>
+          <div class="admin-controls">
+            <%= link_to "Edit", edit_post_path(post), class: "btn btn-edit" %>
+            <%= button_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-delete" %>
+          </div>
+        <% end %>
+      </div>
 
-  .action-button:hover {
-    background: darkgray;
-    color: white;
-  }
-</style>
+
+      <% if !post.visibility? %>
+        <p class="hidden-post-message"><strong>This post has been hidden.</strong></p>
+      <% else %>
+        <h2 class="post-title"><%= post.title %></h2>
+        <p class="post-body"><%= post.body %></p>
+      <% end %>
+    </div>
+
+    
+  <% end %>
+<% else %>
+  <p>No posts available.</p>
+<% end %>

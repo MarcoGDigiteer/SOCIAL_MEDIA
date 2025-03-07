@@ -1,0 +1,16 @@
+<div class="content-wrapper">
+  <h1>My Posts</h1>
+
+  <% if user_signed_in? %>
+    <p>Posts by <%= current_user.email %></p>
+    <%= link_to "Create Post", new_post_path, class: "btn btn-createpost" %>
+  <% end %>
+
+  <% if @posts.present? %>
+    <% @posts.each do |post| %>
+      <%= render "posts/post", post: post %>
+    <% end %>
+  <% else %>
+    <p>You haven't created any posts yet.</p>
+  <% end %>
+</div>

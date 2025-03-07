@@ -1,0 +1,44 @@
+<h1>Admin Dashboard</h1>
+<table class="table">
+  <tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Featured</th>
+    <th>Visibility</th>
+    <th>Actions</th>
+  </tr>
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post.title %></td>
+      <td><%= post.email %></td>
+      <td>
+        <% if post.featured %>
+          <span class="badge bg-warning">Featured</span>
+        <% end %>
+      </td>
+      <td>
+        <% if post.visibility %>
+          <span class="badge bg-success">Visible</span>
+        <% else %>
+          <span class="badge bg-danger">Hidden</span>
+        <% end %>
+      </td>
+      <td>
+        <% feature_class = post.featured ? "btn-warning" : "btn-secondary" %>
+        <% visibility_class = post.visibility ? "btn-secondary" : "btn-primary" %>
+
+        <%= button_to "Feature", toggle_featured_admin_post_path(post), method: :patch, class: "btn #{feature_class}" %>
+        <%= button_to "Toggle Visibility", toggle_visibility_admin_post_path(post), method: :patch, class: "btn #{visibility_class}" %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<td>
+  <% feature_class = post.featured ? "btn-warning" : "btn-secondary" %>
+
+  <%= button_to (post.featured ? "Unfeature" : "Feature"), 
+      toggle_featured_admin_post_path(post), 
+      method: :patch, 
+      class: "btn #{feature_class}" %>
+</td>

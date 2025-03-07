@@ -1,0 +1,14 @@
+<div class="content-wrapper">
+  <h1>Featured Posts</h1>
+
+  <% if @posts.present? %>
+    <% @posts.each do |post| %>
+      <% if post.featured? %>
+        <%= render "posts/post", post: post %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p>No featured posts available.</p>
+  <% end %>
+</div>
+

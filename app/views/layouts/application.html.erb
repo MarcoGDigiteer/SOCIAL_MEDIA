@@ -1,20 +1,42 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for(:title) || "Social Media" %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>DigiteerSocMed</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_importmap_tags %>
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #f8f9fa;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow-y: auto;
+    }
 
-  </head>
-
-  <body>
-    <%= render "shared/navbar" %>
-    <%= render "shared/create_post" %>
-    <%= render "shared/edit_post" %>
-    <%= render "shared/delete_post" %>
-    <%= yield %>
-  </body>
+    .content {
+      margin-left: 270px;
+      padding: 20px;
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+<body>
+  <%= render "shared/sidebar" %>
+  <div class="content">
+    <%= yield %>  <%# This is where home/index.html.erb content will be inserted %>
+  </div>
+</body>
 </html>
