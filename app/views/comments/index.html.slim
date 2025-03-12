@@ -1,0 +1,30 @@
+.content-wrapper
+  h2
+    | Comments for "
+    = @post.title
+    | "
+  p
+    strong
+      | Posted by:
+    = @post.email
+  p
+    = @post.body
+
+  - if user_signed_in?
+    = link_to "Add Comment", new_post_comment_path(@post), class: "btn btn-createpost"
+  - else
+    button.btn.btn-comment[disabled]
+      | Log in to comment
+
+  h3 Comments:
+
+  - @comments.each do |comment|
+    .post-card
+      strong
+        = comment.email
+        |  - 
+        = comment.created_at.strftime("%Y-%m-%d %H:%M")
+      p
+        = comment.body
+
+  = link_to "Back to Post", root_path, class: "btn btn-primary"

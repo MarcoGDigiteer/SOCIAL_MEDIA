@@ -13,11 +13,12 @@
 
 
 /*SIDEBAR LAYOUT*/
-  .sidebar {
-    background-color: gray;
+  /*black buttons: feed, featured and my posts*/
+  .sidebar .btn { 
+    display: block; 
+    margin: 6px 0; 
   }
 
-  /*black buttons: feed, featured and my posts*/
   .btn-navbar {
     background-color: black;
     color: white;
@@ -48,6 +49,10 @@
     background-color: red;
   }
 
+  .sidebar .btn-logout {
+    width: 100%;
+  }  
+
   /*create post button*/
   .btn-createpost {
     background-color: blue;
@@ -75,7 +80,7 @@
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 95%;
     max-width: none;
     margin: 15px 0;
     padding: 15px;
@@ -85,6 +90,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 14px;
+    color: gray;
+    width: 100%;
+    gap: 10px;
+  }
+  .post-header-date {
+    display: flex;
     font-size: 14px;
     color: gray;
     width: 100%;

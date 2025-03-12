@@ -1,0 +1,14 @@
+.content-wrapper
+  h1
+    | My Posts
+  - if user_signed_in?
+    p
+      | Posts by 
+      = current_user.email
+    = link_to "Create Post", new_post_path, class: "btn btn-createpost"
+  - if @posts.present?
+    - @posts.each do |post|
+      = render "posts/post", post: post
+  - else
+    p
+      | You haven't created any posts yet.

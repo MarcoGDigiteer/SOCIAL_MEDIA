@@ -1,0 +1,13 @@
+.content-wrapper
+  h1
+    | Create a New Post
+  = form_with model: @post, url: posts_path, local: true do |f|
+    .form-group
+      = f.label :title
+      = f.text_field :title, class: "form-control", required: true
+    .form-group
+      = f.label :body
+      = f.text_area :body, class: "form-control", required: true
+    .form-actions
+      = f.submit "Post", class: "btn btn-primary"
+      = link_to "Cancel", root_path, class: "btn btn-secondary"

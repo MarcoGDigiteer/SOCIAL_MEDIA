@@ -1,0 +1,13 @@
+.content-wrapper
+  h1
+    | Welcome to DigiteerSocMed
+  - if user_signed_in?
+    p
+      | Welcome, 
+      = current_user.email
+      | !
+    = link_to "Create Post", new_post_path, class: "btn btn-createpost"
+  h2
+    | Recent Posts
+  - @posts.each do |post|
+    = render "posts/post", post: post

@@ -1,0 +1,10 @@
+.content-wrapper
+  h1
+    | Featured Posts
+  - if @posts.present?
+    - @posts.each do |post|
+      - if post.featured?
+        = render "posts/post", post: post
+  - else
+    p
+      | No featured posts available.

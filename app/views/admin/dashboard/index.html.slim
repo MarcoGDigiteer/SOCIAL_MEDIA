@@ -1,0 +1,42 @@
+h1
+  | Admin Dashboard
+table.table
+  tr
+    th
+      | Title
+    th
+      | Author
+    th
+      | Featured
+    th
+      | Visibility
+    th
+      | Actions
+  - @posts.each do |post|
+    tr
+      td
+        = post.title
+      td
+        = post.email
+      td
+        - if post.featured
+          span.badge.bg-warning
+            | Featured
+      td
+        - if post.visibility
+          span.badge.bg-success
+            | Visible
+        - else
+          span.badge.bg-danger
+            | Hidden
+      td
+        - feature_class = post.featured ? "btn-warning" : "btn-secondary"
+        - visibility_class = post.visibility ? "btn-secondary" : "btn-primary"
+        = button_to "Feature", toggle_featured_admin_post_path(post), method: :patch, class: "btn #{feature_class}"
+        = button_to "Toggle Visibility", toggle_visibility_admin_post_path(post), method: :patch, class: "btn #{visibility_class}"
+td
+  - feature_class = post.featured ? "btn-warning" : "btn-secondary"
+  = button_to (post.featured ? "Unfeature" : "Feature"), 
+  -       toggle_featured_admin_post_path(post), 
+  -       method: :patch, 
+  -       class: "btn #{feature_class}"
