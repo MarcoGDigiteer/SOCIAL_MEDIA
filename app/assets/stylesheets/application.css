@@ -90,6 +90,16 @@
     width: 100%;
     gap: 10px;
   }
+
+  .post-footer {
+    display: flex;
+
+    align-items: left;
+    font-size: 14px;
+    color: gray;
+    width: 100%;
+    gap: 10px;
+  }
   
   .post-info {
     display: flex;
@@ -132,8 +142,6 @@
     background-color: rgb(84, 0, 0);
   }
 
-
-  
   /*admin view*/
   .post-admin-row {
     display: flex;

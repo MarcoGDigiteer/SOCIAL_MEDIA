@@ -11,13 +11,12 @@ class PostsController < ApplicationController
     end
   end
   
-
   def featured
-    @posts = Post.where(featured: true, visibility: true).order(created_at: :desc) # Ensure only visible featured posts
+    @posts = Post.where(featured: true, visibility: true).order(created_at: :desc)
   end
 
   def my_posts
-    @posts = Post.where(email: current_user.email).order(created_at: :desc) # Fetch only current user's posts
+    @posts = Post.where(email: current_user.email).order(created_at: :desc)
   end
 
   def new
@@ -35,9 +34,6 @@ class PostsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
   end
 
   def update

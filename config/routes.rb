@@ -14,9 +14,14 @@ Rails.application.routes.draw do
     end
   end  
 
-  resources :posts # This already includes new, create, index, edit, update, destroy
+  resources :posts
   
-  get 'my_posts', to: 'posts#my_posts' # New route for user's posts  
+  resources :posts do
+    resource :post_like, only: [:create, :destroy]
+    resources :comments, only: [:new, :create, :index]
+  end
+
+  get 'my_posts', to: 'posts#my_posts'
 
   devise_for :users
   devise_for :admins
