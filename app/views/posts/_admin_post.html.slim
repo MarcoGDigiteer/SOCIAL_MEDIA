@@ -1,0 +1,27 @@
+- if post.present?
+  <turbo-frame id="post_#{post.id}">
+    .post-admin-row
+      span.admin-email = post.email
+      span.admin-title = post.title
+      span.admin-body = truncate(post.body, length: 100)
+      span.admin-date-created = post.created_at.strftime("%Y-%m-%d %H:%M")
+      span.admin-date-edited
+        - if post.created_at != post.updated_at
+          = post.updated_at.strftime("%Y-%m-%d %H:%M")
+        - else
+          | N/A
+      .admin-controls
+        - btn_text = post.visibility? ? "Hide" : "Show"
+        - btn_class = post.visibility? ? "btn-hide" : "btn-show"
+        = button_to btn_text, toggle_visibility_admin_post_path(post), method: :patch, class: "btn #{btn_class}", data: { turbo_method: :patch }
+        
+        - if post.featured?
+          = button_to "Unfeature", toggle_featured_admin_post_path(post), method: :patch, class: "btn btn-unfeature", data: { turbo_method: :patch }
+        - else
+          - if Post.where(featured: true).count < 5
+            = button_to "Feature", toggle_featured_admin_post_path(post), method: :patch, class: "btn btn-feature", data: { turbo_method: :patch }
+          - else
+            button.btn.btn-secondary[disabled] Feature (Limit Reached)
+  </turbo-frame>
+- else
+  p No posts available.

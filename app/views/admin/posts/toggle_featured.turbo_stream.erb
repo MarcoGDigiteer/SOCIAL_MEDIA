@@ -1,0 +1,6 @@
+<turbo-stream action="replace" target="post_<%= @post.id %>">
+  <template>
+    <%= render partial: "posts/post", formats: [:html], locals: { post: @post } %>
+  </template>
+</turbo-stream>
+

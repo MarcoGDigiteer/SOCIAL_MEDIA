@@ -1,0 +1,45 @@
+- if post.present?
+  <turbo-frame id="post_#{post.id}">
+    .post-card
+      .post-header
+        span.post-email = post.email
+        - if current_user && post.email == current_user.email
+          .admin-controls
+            = link_to "Edit", edit_post_path(post), class: "btn btn-edit", data: { turbo: false }
+            = button_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?", turbo_method: :delete }, class: "btn btn-delete"
+
+      .post-header-date
+        strong Created:
+        = post.created_at.strftime("%Y-%m-%d %H:%M")
+        - if post.created_at != post.updated_at
+          |  |
+          strong Edited:
+          = post.updated_at.strftime("%Y-%m-%d %H:%M")
+
+      - unless post.visibility?
+        p.hidden-post-message
+          strong This post has been hidden.
+      - else
+        h2.post-title = post.title
+        - truncated_body = post.body[0, 280]
+        - remaining_body = post.body[280..] || ""
+        p.post-body
+          = truncated_body
+          span id="dots-#{post.id}" ...
+          - if post.body.length > 280
+            span id="more-#{post.id}" style="display: none;" = remaining_body
+            button.btn.btn-read-more onclick="toggleReadMore(#{post.id})" Read More
+
+        .post-footer
+          = link_to "🗨 (#{post.comments.count})", post_comments_path(post), class: "btn btn-comments"
+
+          - if current_user
+            - if post.liked_users.include?(current_user)
+              = button_to "❤️ (#{post.post_likes.count})", post_post_like_path(post), method: :delete, class: "btn btn-unlike", data: { turbo_method: :delete }
+            - else
+              = button_to "🤍 (#{post.post_likes.count})", post_post_like_path(post), method: :post, class: "btn btn-like", data: { turbo_method: :post }
+          - else
+            button.btn.btn-like[disabled] Like (#{post.post_likes.count})
+  </turbo-frame>
+- else
+  p No posts available.

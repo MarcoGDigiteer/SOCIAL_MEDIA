@@ -16,23 +16,34 @@ class Admin::PostsController < ApplicationController
   end
 
   def toggle_visibility
-    @post.update_column(:visibility, !@post.visibility)
-    redirect_back fallback_location: admin_dashboard_path, notice: "Visibility updated."
+    @post.update(visibility: !@post.visibility)
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_back fallback_location: admin_dashboard_path, notice: "Visibility updated." }
+    end
   end
+  
 
   def toggle_featured
     if @post.featured?
-      @post.update_column(:featured, false)
-      redirect_back fallback_location: admin_dashboard_path, notice: "Post unfeatured."
+      @post.update(featured: false)
     else
       if Post.where(featured: true).count < 5
-        @post.update_column(:featured, true)
-        redirect_back fallback_location: admin_dashboard_path, notice: "Post featured."
+        @post.update(featured: true)
       else
-        redirect_back fallback_location: admin_dashboard_path, alert: "Feature limit reached."
+        respond_to do |format|
+          format.html { redirect_back fallback_location: admin_dashboard_path, alert: "Feature limit reached." }
+        end
+        return
       end
     end
+  
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_back fallback_location: admin_dashboard_path, notice: "Post updated." }
+    end
   end
+  
 
   private
 
