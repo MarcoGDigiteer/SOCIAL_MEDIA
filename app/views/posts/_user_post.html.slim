@@ -31,7 +31,7 @@
             button.btn.btn-read-more onclick="toggleReadMore(#{post.id})" Read More
 
         .post-footer
-          = link_to "🗨 (#{post.comments.count})", post_comments_path(post), class: "btn btn-comments"
+          = link_to "🗨 (#{post.comments.count})", post_comments_path(post), class: "btn btn-comments", data: { turbo: false }
 
           - if current_user
             - if post.liked_users.include?(current_user)
