@@ -25,10 +25,10 @@
         - remaining_body = post.body[280..] || ""
         p.post-body
           = truncated_body
-          span id="dots-#{post.id}" ...
           - if post.body.length > 280
+            span id="dots-#{post.id}" ...
             span id="more-#{post.id}" style="display: none;" = remaining_body
-            button.btn.btn-read-more onclick="toggleReadMore(#{post.id})" Read More
+            button.btn.btn-read-more id="btn-#{post.id}" onclick="toggleReadMore(#{post.id})" Read More
 
         .post-footer
           = link_to "🗨 (#{post.comments.count})", post_comments_path(post), class: "btn btn-comments", data: { turbo: false }
@@ -43,3 +43,20 @@
   </turbo-frame>
 - else
   p No posts available.
+
+javascript:
+  function toggleReadMore(postId) {
+    let dots = document.getElementById(`dots-${postId}`);
+    let moreText = document.getElementById(`more-${postId}`);
+    let btnText = document.querySelector(`#btn-${postId}`);
+
+    if (dots.style.display === "none") {
+      dots.style.display = "inline";
+      moreText.style.display = "none";
+      btnText.innerText = "Read More";
+    } else {
+      dots.style.display = "none";
+      moreText.style.display = "inline";
+      btnText.innerText = "Read Less";
+    }
+  }

@@ -38,14 +38,12 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to posts_path, notice: "Post updated successfully." }
-      end
+      redirect_to posts_path, notice: "Post updated successfully."
     else
       render :edit
     end
   end
+  
   
   def destroy
     @post.destroy
