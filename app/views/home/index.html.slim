@@ -1,13 +1,23 @@
 .content-wrapper
-  h1
-    | Welcome to DigiteerSocMed
+  h1 Welcome to DigiteerSocMed
+
   - if user_signed_in?
     p
       | Welcome, 
       = current_user.email
       | !
     = link_to "Create Post", new_post_path, class: "btn btn-createpost"
-  h2
-    | Recent Posts
-  - @posts.each do |post|
-    = render "posts/post", post: post
+
+  - if admin_signed_in?
+    .admin-sort-options
+      | Sort by:
+      = form_with url: root_path, method: :get, local: false, data: { turbo_frame: "posts_list" } do |f|
+        = f.select :sort, [["Newest", "newest"], ["Oldest", "oldest"], ["Title (A-Z)", "title_asc"], ["Title (Z-A)", "title_desc"]], selected: params[:sort] || "newest", class: "admin-sort-select"
+        = f.select :user, options_for_select([["All Users", ""]] + @users.map { |user| [user, user] }, params[:user]), class: "admin-user-select"
+        = f.submit "Filter", class: "btn btn-sort"
+
+  h2 Recent Posts
+  <turbo-frame id="posts_list">
+    - @posts.each do |post|
+      = render "posts/post", post: post
+  </turbo-frame>
