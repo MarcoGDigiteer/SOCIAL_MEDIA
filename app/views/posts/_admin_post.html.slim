@@ -21,7 +21,7 @@
           - if Post.where(featured: true).count < 5
             = button_to "Feature", toggle_featured_admin_post_path(post), method: :patch, class: "btn btn-feature", data: { turbo_method: :patch }
           - else
-            button.btn.btn-secondary[disabled] Feature (Limit Reached)
+            button.btn.btn-secondary[disabled] Feature
   </turbo-frame>
 - else
   p No posts available.

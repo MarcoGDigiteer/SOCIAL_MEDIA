@@ -5,7 +5,7 @@
         span.post-email = post.email
         - if current_user && post.email == current_user.email
           .admin-controls
-            = link_to "Edit", edit_post_path(post), class: "btn btn-edit", data: { turbo: false }
+            = link_to "Edit", edit_inline_post_path(post), method: :get, remote: true, class: "btn btn-edit", data: { turbo_frame: "post_#{post.id}" }
             = button_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?", turbo_method: :delete }, class: "btn btn-delete"
 
       .post-header-date
@@ -30,9 +30,9 @@
             span id="more-#{post.id}" style="display: none;" = remaining_body
             button.btn.btn-read-more id="btn-#{post.id}" onclick="toggleReadMore(#{post.id})" Read More
 
+
         .post-footer
           = link_to "🗨 (#{post.comments.count})", post_comments_path(post), class: "btn btn-comments", data: { turbo: false }
-
           - if current_user
             - if post.liked_users.include?(current_user)
               = button_to "❤️ (#{post.post_likes.count})", post_post_like_path(post), method: :delete, class: "btn btn-unlike", data: { turbo_method: :delete }
@@ -41,6 +41,7 @@
           - else
             button.btn.btn-like[disabled] Like (#{post.post_likes.count})
   </turbo-frame>
+
 - else
   p No posts available.
 

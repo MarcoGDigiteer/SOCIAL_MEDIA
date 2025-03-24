@@ -1,7 +1,7 @@
 <turbo-frame id="post_<%= post.id %>">
   <h1>Edit Post</h1>
 
-  <%= form_with model: post, url: post_path(post), method: :patch, local: false do |f| %>
+  <%= form_with model: post, url: post_path(post), method: :patch, local: false, data: { turbo_frame: "post_#{post.id}" } do |f| %>
     <div class="form-group">
       <%= f.label :title %>
       <%= f.text_field :title, class: "form-control", required: true %>

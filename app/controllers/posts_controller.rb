@@ -5,9 +5,9 @@ class PostsController < ApplicationController
 
   def index
     if admin_signed_in?
-      @posts = Post.all # Admins see all posts
+      @posts = Post.all
     else
-      @posts = Post.where(visibility: true).order(created_at: :desc) # Normal users see only visible posts
+      @posts = Post.where(visibility: true).order(created_at: :desc)
     end
   end
   
@@ -30,20 +30,30 @@ class PostsController < ApplicationController
     @post.visibility = true
   
     if @post.save
-      redirect_to posts_path, notice: "Post created successfully."
+      redirect_to root_path, notice: "Post created successfully."
     else
       render :new
     end
   end
-
+  
   def update
     if @post.update(post_params)
-      redirect_to posts_path, notice: "Post updated successfully."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("post_#{@post.id}", partial: "posts/user_post", locals: { post: @post }) }
+        format.html { redirect_to posts_path, notice: "Post updated successfully." }
+      end
     else
-      render :edit
+      respond_to do |format|
+        format.turbo_stream { render partial: "posts/inline_form", locals: { post: @post } }
+        format.html { render :edit }
+      end
     end
   end
   
+  def edit_inline
+    @post = Post.find(params[:id])
+    render partial: "posts/inline_form", locals: { post: @post }
+  end
   
   def destroy
     @post.destroy
@@ -52,6 +62,12 @@ class PostsController < ApplicationController
       format.html { redirect_to posts_path, notice: "Post deleted successfully." }
     end
   end
+
+  def show
+    @post = Post.find(params[:id])
+    render partial: "posts/user_post", locals: { post: @post }
+  end
+  
   
   private
 

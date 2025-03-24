@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   resources :posts do
     resource :post_like, only: [:create, :destroy]
     resources :comments, only: [:new, :create, :index]
+    member do
+      get :edit_inline
+    end
   end
 
   get 'my_posts', to: 'posts#my_posts'
