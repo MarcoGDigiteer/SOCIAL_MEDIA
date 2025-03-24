@@ -1,5 +1,5 @@
 .content-wrapper
-  h1 Welcome to DigiteerSocMed
+  h1 Welcome to Social Media Site
 
   - if user_signed_in?
     p
@@ -21,3 +21,7 @@
     - @posts.each do |post|
       = render "posts/post", post: post
   </turbo-frame>
+
+  // Add Pagination Controls
+  .pagination-wrapper
+   == pagy_nav(@pagy, link_extra: 'data-turbo="false"')
